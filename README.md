@@ -12,7 +12,6 @@ node can process a request for any key (although it may have to re-route the req
 
 * [Distributed hashtables](http://en.wikipedia.org/wiki/Distributed_hash_table) - Don't worry if this overview of distributed hashtables seems a little dense. It's there if you need it, but this project will keep things pretty simple.
 * [Flask](http://flask.pocoo.org/docs/0.10) - Each process in the distributed hashtable will run a Flask HTTP server, so you'll need to install Flask if you don't already have it.
-* 
 
 ### Functionality
 
