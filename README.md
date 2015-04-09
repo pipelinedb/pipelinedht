@@ -27,7 +27,7 @@ Functionally, `get`, `put`, and `delete` are identical to the analagous calls on
 
 #### join / leave
 
-`join` and `leave` will add and remove a node to the distributed hashtable, respectively. `join` takes a list of peers to join to, and `leave` should remove itself from the list of peers stored by each node currently running in the distributed hashtable.
+`join` and `leave` will add and remove a node to the distributed hashtable, respectively. `join` takes a list of peers to join to, and `leave` should remove itself from the list of peers stored by each node currently running in the distributed hashtable. These calls will involve rebalancing the DHT's data so that it is evenly distributed across all nodes after one has been added or removed.
 
 ### Skeleton
 
