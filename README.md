@@ -17,9 +17,11 @@ node can process a request for any key (although it may have to re-route the req
 
 The distributed hashtable will expose all of its public functionality via HTTP. This includes the standard hashtable `get`, `put`, and `delete` calls, as well as two operational functions: `join` and `leave`. For example, if a process is running at `localhost:9876`, you could use `curl` to use the distributed hashtable.
 
-    # curl --data 'value' http://localhost:9876/db/put/key
-    # curl http://localhost:9876/db/get/key
+    # curl -X PUT http://localhost:9876/db/key -d value
+    # curl -X GET http://localhost:9876/db/key
     value
+    # curl -X DELETE http://localhost:9876/db/key
+    # curl http://localhost:9876/db/key
     
 #### get / put / delete
 
@@ -33,7 +35,7 @@ Functionally, `get`, `put`, and `delete` are identical to the analagous calls on
 
 This repository contains a skeleton for the distributed hashtable implementation to use as a starting point:
 
-* [server](https://github.com/pipelinedb/pipelinedht/blob/master/dht/server.py) - Public HTTP interface that will be exposed by each DHT process.
+* [server](https://github.com/pipelinedb/pipelinedht/blob/master/dht/server.py) - Public [RESTful interface](http://en.wikipedia.org/wiki/Representational_state_transfer) that will be exposed by each DHT process.
 * [runserver](https://github.com/pipelinedb/pipelinedht/blob/master/runserver.py) - Script to run a DHT process with its HTTP server on a given host and port.
 * [tests](https://github.com/pipelinedb/pipelinedht/tree/master/tests) - Test harness to verify your [server](https://github.com/pipelinedb/pipelinedht/blob/master/dht/server.py) implementation. 
 
