@@ -5,7 +5,7 @@ A simple distributed hash table
 
 In this project you'll be implementing a distributed hash table in Python. The hashtable will be spread across
 multiple processes, and will expose all of its public functionality via an HTTP API. Processes can communicate with
-each other using a protocol of your choosing. The hashtable's keyspace will be partitioned evenly across all nodes (processes), although any
+each other using a protocol of your choosing. The hashtable's keyspace will be partitioned evenly across all nodes (processes), but any
 node can process a request for any key (although it may have to re-route the request).
 
 ### Resources
