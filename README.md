@@ -25,7 +25,7 @@ The distributed hash table will expose all of its public functionality via HTTP.
     
 #### get / put / delete
 
-Functionally, `get`, `put`, and `delete` are identical to the analagous calls on a regular hash table. However, for the purposes of our distributed hash table, each of these calls will need to operate on the process that is currently responsible for the given key. That is, a node receiving a `get`, `put`, or `delete` request may need to re-route the request to the node that actuall contains the key in question.
+Functionally, `get`, `put`, and `delete` are identical to the analagous calls on a regular hash table. However, for the purposes of our distributed hash table, each of these calls will need to operate on the process that is currently responsible for the given key. That is, a node receiving a `get`, `put`, or `delete` request may need to re-route the request to the node that actually contains the key in question.
 
 #### join / leave
 
