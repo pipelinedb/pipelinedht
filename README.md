@@ -21,7 +21,7 @@ The distributed hash table will expose all of its public functionality via HTTP.
     # curl -X GET http://localhost:9876/db/key
     value
     # curl -X DELETE http://localhost:9876/db/key
-    # curl http://localhost:9876/db/key
+    # curl -X GET http://localhost:9876/db/key
     
 #### get / put / delete
 
