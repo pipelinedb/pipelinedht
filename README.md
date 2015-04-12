@@ -31,13 +31,16 @@ Functionally, `get`, `put`, and `delete` are identical to the analagous calls on
 
 `join` and `leave` will add and remove a node to the distributed hash table, respectively. `join` takes a list of peers to join to, and `leave` should remove itself from the list of peers stored by each node currently running in the distributed hash table. These calls will involve rebalancing the DHT's data so that it is evenly distributed across all nodes after one has been added or removed.
 
+For the sake of simplicity, concurrent requests to `join` or `leave` will never be made on the DHT. Furthermore, no `put`, `get` or `delete` requests will be made while a `join` or `leave` request is in progress. 
+
 ### Skeleton
 
 This repository contains a skeleton for the distributed hash table implementation to use as a starting point:
 
-* [server](https://github.com/pipelinedb/pipelinedht/blob/master/dht/server.py) - Public [RESTful interface](http://en.wikipedia.org/wiki/Representational_state_transfer) that will be exposed by each DHT process.
-* [runserver](https://github.com/pipelinedb/pipelinedht/blob/master/runserver.py) - Script to run a DHT process with its HTTP server on a given host and port.
-* [tests](https://github.com/pipelinedb/pipelinedht/tree/master/tests) - Test harness to verify your [server](https://github.com/pipelinedb/pipelinedht/blob/master/dht/server.py) implementation. 
+* [server.py](https://github.com/pipelinedb/pipelinedht/blob/master/dht/server.py) - Public [RESTful interface](http://en.wikipedia.org/wiki/Representational_state_transfer) that will be exposed by each DHT process.
+* [runserver.py](https://github.com/pipelinedb/pipelinedht/blob/master/runserver.py) - Script to run a DHT process with its HTTP server on a given host and port.
+* [tests](https://github.com/pipelinedb/pipelinedht/tree/master/tests) - Test harness to verify your [server](https://github.com/pipelinedb/pipelinedht/blob/master/dht/server.py) implementation. The [runtests.py](https://github.com/pipelinedb/pipelinedht/blob/master/runtests.py) script can be used to run all the tests.
+* [DHTNode](https://github.com/pipelinedb/pipelinedht/blob/master/tests/__init__.py#L14) - An object wrapper around managing a DHT process and making requests to it, which probably is easier to use than cURL.
 
 ### Notes
 
