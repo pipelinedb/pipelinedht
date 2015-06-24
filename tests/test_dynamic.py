@@ -7,7 +7,7 @@ MAX_NODES = 10
 
 class DynamicDHTTest(unittest.TestCase):
   def setUp(self):
-    self.nodes = [DHTNode('name%d' % i, None) for i in xrange(MAX_NODES)]
+    self.nodes = [DHTNode('name%d' % i) for i in xrange(MAX_NODES)]
     map(lambda n: n.start(), self.nodes)
 
   def test_add_and_leave(self):
@@ -40,13 +40,10 @@ class DynamicDHTTest(unittest.TestCase):
     for node in self.nodes:
       for i in range(500):
         key = 'key_%d' % i
-        if node == remove_node:
-          if key in remove_keys:
-            self.assertEqual(node.get(key), 'value_%d' % i)
-          else:
-            self.assertEqual(node.get(key), '')
-        else:
-          self.assertEqual(node.get(key), 'value_%d' % i)
+        value = 'value_%d' % i
+        if node == remove_node and key not in remove_keys:
+          value = ''
+        self.assertEqual(node.get(key), value)
 
     # Add the removed node back and see that all nodes see all keys.
     while True:

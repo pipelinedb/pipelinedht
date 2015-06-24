@@ -8,11 +8,11 @@ RUN_SERVER_CMD = 'python runserver.py --name=%s --port=%d'
 SERVER_URL = 'http://localhost:%d'
 
 def assert_success(r):
-  if not (r.status_code == 200 and r.text == 'OK'):
-    raise Exception('Request failed.')
+  if r.status_code != 200:
+    raise Exception('Request failed: %d.', r.status_code)
 
 class DHTNode(object):
-  def __init__(self, name, port):
+  def __init__(self, name, port=None):
     self.name = name
     # If no port is provided, pick an unused one.
     if port is None:
@@ -21,7 +21,7 @@ class DHTNode(object):
       _, port = sock.getsockname()
       sock.close()
     self.port = port
-    self.proc = None
+    self._proc = None
     self._url = SERVER_URL % self.port
 
   def start(self):
@@ -30,7 +30,7 @@ class DHTNode(object):
 
     cmd = RUN_SERVER_CMD % (self.name, self.port)
     fnull = open(os.devnull, 'w')
-    self.proc = subprocess.Popen(cmd.split(), stdout=fnull, stderr=fnull)
+    self._proc = subprocess.Popen(cmd.split(), stdout=fnull, stderr=fnull)
     # Keep on polling for 5 seconds to see if server is up and running.
     for _ in xrange(50):
       time.sleep(0.1)
@@ -42,25 +42,24 @@ class DHTNode(object):
       raise Exception('DHTNode[%s] failed to start up.' % self.name)
 
   def is_running(self):
-    return self.proc and self.proc.poll() is None
+    return self._proc and self._proc.poll() is None
 
   def stop(self):
     if not self.is_running():
       raise Exception('DHTNode[%s] is not running.' % self.name)
-    self.proc.kill()
-    self.proc.wait()
+    self._proc.kill()
+    self._proc.wait()
 
   def ping(self):
     try:
       r = requests.get(self._url)
+      assert_success(r)
     except:
       return False
-    return r.status_code == 200 and r.text == 'OK'
 
   def keys(self):
     r = requests.get(self._url + '/db')
-    if r.status_code != 200:
-      raise Exception('Request failed')
+    assert_success(r)
     return filter(lambda s: s, r.text.split('\r\n'))
 
   def put(self, key, value):
@@ -69,8 +68,7 @@ class DHTNode(object):
 
   def get(self, key):
     r = requests.get(self._url + '/db/%s' % key)
-    if r.status_code != 200:
-      raise Exception('Request failed')
+    assert_success(r)
     return r.text
 
   def delete(self, key):
@@ -79,8 +77,7 @@ class DHTNode(object):
 
   def peers(self):
     r = requests.get(self._url + '/dht/peers')
-    if r.status_code != 200:
-      raise Exception('Request failed')
+    assert_success(r)
     return filter(lambda s: s, r.text.split('\r\n'))
 
   def join(self, *seeds):

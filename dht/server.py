@@ -5,9 +5,9 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def ping():
   """
-  Returns OK when the server is ready.
+  Returns when the server is ready.
   """
-  return 'OK'
+  return ''
 
 @app.route('/db', methods=['GET'])
 def keys():
@@ -32,8 +32,6 @@ def put(key):
   """
   Upserts the key into the DHT. The value is equal to the body of the HTTP
   request.
-
-  Returns OK on success.
   """
   raise NotImplemented
 
@@ -41,8 +39,6 @@ def put(key):
 def delete(key):
   """
   Deletes the key from the DHT if it exists, noop otherwise.
-
-  Returns OK on success.
   """
   raise NotImplemented
 
@@ -66,8 +62,6 @@ def join():
   HTTP request body will look like:
 
     <name1>:<host1>:<port1>\r\n<name2>:<host2>:<port2>...
-
-  Returns OK on success.
   """
   raise NotImplemented
 
@@ -77,7 +71,5 @@ def leave():
   Leave the current DHT. This request should only retrn the DHT this node
   is leaving has stabilized and this node is a standalone node now; noop is
   not part of any DHT.
-
-  Returns OK on success.
   """
   raise NotImplemented

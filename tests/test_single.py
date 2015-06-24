@@ -4,7 +4,7 @@ from tests import DHTNode
 
 class SingleNodeTest(unittest.TestCase):
   def setUp(self):
-    self.node = DHTNode('node', None)
+    self.node = DHTNode('node')
     self.node.start()
 
   def test_simple(self):
@@ -17,7 +17,7 @@ class SingleNodeTest(unittest.TestCase):
     try:
       node.delete('hello')
     except:
-      self.fail('Deleting non-empty node failed.')
+      self.fail('node failed to delete non-existent key')
 
     # There must be no keys in a new node.
     self.assertEqual(len(node.keys()), 0)

@@ -7,7 +7,7 @@ MAX_NODES = 10
 
 class GrowingDHTTest(unittest.TestCase):
   def setUp(self):
-    self.nodes = [DHTNode('name%d' % i, None) for i in xrange(MAX_NODES)]
+    self.nodes = [DHTNode('name%d' % i) for i in xrange(MAX_NODES)]
     map(lambda n: n.start(), self.nodes)
 
   def test_add(self):
@@ -18,6 +18,8 @@ class GrowingDHTTest(unittest.TestCase):
     node1.put('lol', 'cat')
 
     self.assertEqual(node0.get('hello'), 'world')
+    self.assertEqual(node0.get('lol'), '')
+    self.assertEqual(node1.get('hello'), '')
     self.assertEqual(node1.get('lol'), 'cat')
 
     try:
@@ -29,8 +31,10 @@ class GrowingDHTTest(unittest.TestCase):
     self.assertEqual(len(node1.peers()), 2)
 
     # Ensure we can fetch keys from the other node.
-    self.assertEqual(node1.get('hello'), 'world')
+    self.assertEqual(node0.get('hello'), 'world')
     self.assertEqual(node0.get('lol'), 'cat')
+    self.assertEqual(node1.get('hello'), 'world')
+    self.assertEqual(node1.get('lol'), 'cat')
 
     # Check that keys can be inserted and fetched from both nodes.
     for i in xrange(100):
@@ -47,7 +51,7 @@ class GrowingDHTTest(unittest.TestCase):
     # Insert 100 keys into each of the 10 nodes.
     for n in xrange(MAX_NODES):
       for i in xrange(100):
-        self.nodes[n].put('k%s_%d' % (n, i), str(i))
+        self.nodes[n].put('k%d_%d' % (n, i), str(i))
 
     for n in xrange(MAX_NODES):
       self.assertEqual(len(self.nodes[n].keys()), 100)
